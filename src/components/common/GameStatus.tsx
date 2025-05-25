@@ -1,6 +1,6 @@
 import React from 'react';
 import { Player } from '../../types/game';
-import { Loader2 } from 'lucide-react';
+import { Loader2, User } from 'lucide-react';
 
 interface GameStatusProps {
   turn: Player.X | Player.O;
@@ -26,12 +26,13 @@ const GameStatus: React.FC<GameStatusProps> = ({ turn, winner, isDraw, isAIThink
     }
 
     return (
-      <div className="flex items-center gap-2">
-        <span>Current Turn: </span>
+      <div className="flex items-center gap-5">
+        <User className={`font-bold ${turn === Player.X ? 'text-blue-500' : 'text-rose-500'}`} />
+        <span>: </span>
         <span className={`font-bold ${
           turn === Player.X ? 'text-blue-500' : 'text-rose-500'
         }`}>
-          Player {turn}
+           {turn}
         </span>
         {isAIThinking && (
           <span className="flex items-center gap-1 text-slate-500">

@@ -18,7 +18,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, depth }) => {
   return (
     <div className="ml-4">
       <div 
-        className="flex items-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 rounded py-1"
+        className="flex items-center cursor-pointer hover:bg-slate-700 dark:hover:bg-slate-700 rounded py-1"
         onClick={toggleExpand}
       >
         {node.children && node.children.length > 0 ? (

@@ -15,7 +15,7 @@ const GameOption: React.FC<GameOptionProps> = ({ icon, title, description, selec
     className={`p-6 rounded-lg cursor-pointer transition-all ${
       selected 
         ? 'bg-blue-500 text-white scale-105 shadow-lg' 
-        : 'bg-slate-400 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-gray-900 shadow'
+        : 'bg-slate-400 dark:bg-slate-800 hover:bg-blue-700 dark:hover:bg-gray-900 shadow'
     }`}
     onClick={onClick}
   >

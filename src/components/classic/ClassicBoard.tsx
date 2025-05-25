@@ -33,7 +33,7 @@ const ClassicBoard: React.FC<ClassicBoardProps> = ({
             : 'bg-white dark:bg-slate-800'
         } ${
           !disabled && cellValue === Player.NONE 
-            ? 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer' 
+            ? 'hover:bg-slate-700 dark:hover:bg-slate-700 cursor-pointer' 
             : 'cursor-default'
         } transition-colors duration-200 border border-slate-300 dark:border-slate-600`}
         onClick={() => !disabled && onCellClick(index)}

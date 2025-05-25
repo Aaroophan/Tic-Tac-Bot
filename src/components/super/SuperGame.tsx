@@ -19,7 +19,7 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [aiSettings, setAISettings] = useState<AISettings>({
-    level: 'medium',
+    level: 'hard',
     showDecisionTree: false
   });
   const [isAIThinking, setIsAIThinking] = useState(false);
@@ -115,7 +115,6 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
         >
           <ArrowLeft size={18} />
-          <span>Back</span>
         </button>
         
         <h2 className="text-xl font-bold">Super Tic Tac Toe</h2>
@@ -125,7 +124,6 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
         >
           <RotateCcw size={18} />
-          <span>Restart</span>
         </button>
       </div>
 

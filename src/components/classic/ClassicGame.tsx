@@ -185,7 +185,6 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
         >
           <ArrowLeft size={18} />
-          <span>Back</span>
         </button>
         
         <h2 className="text-xl font-bold">Infinite Tic Tac Toe</h2>
@@ -195,7 +194,6 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
         >
           <RotateCcw size={18} />
-          <span>Restart</span>
         </button>
       </div>
 
@@ -232,7 +230,7 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
               {moveHistory.map((move) => (
                 <div 
                   key={move.timestamp}
-                  className="px-3 py-2 mb-1 rounded bg-slate-100 dark:bg-slate-700"
+                  className="px-3 py-2 mb-1 rounded bg-slate-700 dark:bg-slate-700"
                 >
                   {move.moveNumber < 10 ? `#0${move.moveNumber}: ${move.player} @ ${move.position + 1}` : `#${move.moveNumber}: ${move.player} @ ${move.position + 1}`}
                 </div>

@@ -59,7 +59,7 @@ const SuperBoard: React.FC<SuperBoardProps> = ({
         ? 'bg-blue-500/20 dark:bg-blue-500/30' 
         : boardWinner === Player.O 
           ? 'bg-rose-500/20 dark:bg-rose-500/30'
-          : 'bg-slate-100 dark:bg-slate-700' // Draw
+          : 'bg-slate-700 dark:bg-slate-700' // Draw
       : 'bg-white dark:bg-slate-800';
 
     // Check if this board is a win in the main board
