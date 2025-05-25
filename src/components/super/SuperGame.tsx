@@ -96,8 +96,8 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
   const getDifficultyDepth = (): number => {
     switch (aiSettings.level) {
       case 'easy': return 1;
-      case 'medium': return 2;
-      case 'hard': return 3; // Super TTT is more complex, so we limit the depth
+      case 'medium': return 4;
+      case 'hard': return 7; // Super TTT is more complex, so we limit the depth
       default: return 3;
     }
   };

@@ -89,10 +89,50 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
     if (newPatternHistory.length >= 24) {
       const hasPattern = checkRepeatedPattern(newPatternHistory);
       console.log('Pattern check result:', hasPattern);
+
+      if (hasPattern) {
+        console.log('Pattern detected - removing earliest 2 moves');
+        // Remove earliest 2 moves from both histories
+        const updatedMoveHistory = newMoveHistory.slice(2);
+        const updatedPatternHistory = newPatternHistory.slice(2);
+
+        // Update the board to reflect removed moves
+        const updatedBoard = Array(9).fill(Player.NONE);
+        updatedMoveHistory.forEach(move => {
+          updatedBoard[move.position] = move.player;
+        });
+
+        setBoard(updatedBoard);
+        setMoveHistory(updatedMoveHistory);
+        setPatternHistory(updatedPatternHistory);
+
+        // Switch turns to the other player
+        setTurn(turn === Player.X ? Player.O : Player.X);
+        return;
+      }
+    }
+    if (newPatternHistory.length >= 24) {
+      const hasPattern = checkRepeatedPattern(newPatternHistory);
+      console.log('Pattern check result:', hasPattern);
       
       if (hasPattern) {
-        console.log('Pattern detected - declaring draw');
-        setIsDraw(true);
+        console.log('Pattern detected - removing earliest 2 moves');
+        // Remove earliest 2 moves from both histories
+        const updatedMoveHistory = newMoveHistory.slice(2);
+        const updatedPatternHistory = newPatternHistory.slice(2);
+        
+        // Update the board to reflect removed moves
+        const updatedBoard = Array(9).fill(Player.NONE);
+        updatedMoveHistory.forEach(move => {
+          updatedBoard[move.position] = move.player;
+        });
+        
+        setBoard(updatedBoard);
+        setMoveHistory(updatedMoveHistory);
+        setPatternHistory(updatedPatternHistory);
+        
+        // Switch turns to the other player
+        setTurn(turn === Player.X ? Player.O : Player.X);
         return;
       }
     }
