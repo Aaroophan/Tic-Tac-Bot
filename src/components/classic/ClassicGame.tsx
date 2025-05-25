@@ -5,7 +5,7 @@ import AIControls from '../common/AIControls';
 import GameStatus from '../common/GameStatus';
 import DecisionTreeView from '../ai/DecisionTreeView';
 import { GameMode, Player, GameCell, AISettings, MoveHistoryItem } from '../../types/game';
-import { checkWinner, checkDraw, isApproachingDraw, removeEarliestMove } from '../../game/classicGame';
+import { checkWinner, checkDraw, isApproachingDraw, removeEarliestMove, checkRepeatedPattern } from '../../game/classicGame';
 import { getAIMove, getDecisionTree } from '../../game/ai/minimaxClassic';
 
 interface ClassicGameProps {
@@ -20,6 +20,7 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [moveHistory, setMoveHistory] = useState<MoveHistoryItem[]>([]);
+  const [patternHistory, setPatternHistory] = useState<MoveHistoryItem[]>([]);
   const [totalMoves, setTotalMoves] = useState(0);
   const [aiSettings, setAISettings] = useState<AISettings>({
     level: 'hard',
@@ -40,6 +41,7 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
     setWinner(null);
     setIsDraw(false);
     setMoveHistory([]);
+    setPatternHistory([]);
     setTotalMoves(0);
   };
 
@@ -63,20 +65,40 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
     setTotalMoves(nextMoveNumber);
     
     // Record move in history
-    const newMoveHistory = [...moveHistory, {
+    const newMove = {
       position: index,
       player: turn,
       timestamp: Date.now(),
       moveNumber: nextMoveNumber
-    }];
+    };
+    
+    const newMoveHistory = [...moveHistory, newMove];
+    const newPatternHistory = [...patternHistory, newMove];
     
     // Update board state
     setBoard(newBoard);
     setMoveHistory(newMoveHistory);
+    setPatternHistory(newPatternHistory);
 
-    // Check for winner
+    // Log current state for debugging
+    console.log('Current move:', { position: index, player: turn });
+    console.log('Total moves:', nextMoveNumber);
+    console.log('Pattern history length:', newPatternHistory.length);
+
+    // First check for repeated pattern
+    if (newPatternHistory.length >= 24) {
+      const hasPattern = checkRepeatedPattern(newPatternHistory);
+      console.log('Pattern check result:', hasPattern);
+      
+      if (hasPattern) {
+        console.log('Pattern detected - declaring draw');
+        setIsDraw(true);
+        return;
+      }
+    }
+
+    // Then check for winner
     const gameWinner = checkWinner(newBoard);
-    
     if (gameWinner) {
       setWinner(gameWinner);
     } else if (isApproachingDraw(newBoard)) {

@@ -75,3 +75,32 @@ export function evaluateBoard(board: GameCell[], player: Player): number {
   // No winner yet, evaluate position
   return 0;
 }
+
+// Check if there's a repeated pattern in the move history
+export function checkRepeatedPattern(moveHistory: MoveHistoryItem[]): boolean {
+  if (moveHistory.length < 24) return false; // Need at least 3 sets of 8 moves
+
+  // Get the last 24 moves (3 sets of 8 moves)
+  const last24Moves = moveHistory.slice(-24);
+  
+  // Create pattern strings that include both position and player
+  const createPatternString = (moves: MoveHistoryItem[]) => {
+    return moves.map(move => `${move.position}-${move.player}`).join(',');
+  };
+  
+  // Get patterns for each set of 8 moves
+  const pattern1 = createPatternString(last24Moves.slice(0, 8));
+  const pattern2 = createPatternString(last24Moves.slice(8, 16));
+  const pattern3 = createPatternString(last24Moves.slice(16, 24));
+  
+  // Log patterns for debugging
+  console.log('Pattern 1:', pattern1);
+  console.log('Pattern 2:', pattern2);
+  console.log('Pattern 3:', pattern3);
+  
+  // Compare patterns
+  const isPattern = pattern1 === pattern2 && pattern2 === pattern3;
+  console.log('Is pattern repeated:', isPattern);
+  
+  return isPattern;
+}
