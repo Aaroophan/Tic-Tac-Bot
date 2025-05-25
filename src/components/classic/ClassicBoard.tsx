@@ -25,8 +25,8 @@ const ClassicBoard: React.FC<ClassicBoardProps> = ({
     return (
       <button
         key={index}
-        className={`aspect-square ${
-          smallBoard ? 'text-lg sm:text-xl' : 'text-3xl sm:text-5xl'
+        className={`relative aspect-square ${
+          smallBoard ? 'text-lg' : 'text-3xl'
         } font-bold flex items-center justify-center ${
           isWinningCell 
             ? 'bg-green-200 dark:bg-green-800' 
@@ -55,7 +55,7 @@ const ClassicBoard: React.FC<ClassicBoardProps> = ({
   };
 
   return (
-    <div className={`grid grid-cols-3 gap-1 ${smallBoard ? 'w-full' : 'w-full max-w-[350px] m-4'}`}>
+    <div className={`grid grid-cols-3 gap-1 ${smallBoard ? 'w-full' : 'w-full max-w-[250px] m-4'}`}>
       {Array(9).fill(null).map((_, index) => renderCell(index))}
     </div>
   );

@@ -22,7 +22,7 @@ const GameStatus: React.FC<GameStatusProps> = ({ turn, winner, isDraw, isAIThink
     }
 
     if (isDraw) {
-      return <div className="font-bold text-xl text-yellow-500">Draw: Pattern Repeated</div>;
+      return <div className="font-bold text-xl text-yellow-500">Draw</div>;
     }
 
     return (
