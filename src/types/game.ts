@@ -44,4 +44,5 @@ export interface MoveHistoryItem {
   position: number;
   player: Player;
   timestamp: number;
+  moveNumber: number;
 }

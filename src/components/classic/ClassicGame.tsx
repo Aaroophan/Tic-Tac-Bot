@@ -20,6 +20,7 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [moveHistory, setMoveHistory] = useState<MoveHistoryItem[]>([]);
+  const [totalMoves, setTotalMoves] = useState(0);
   const [aiSettings, setAISettings] = useState<AISettings>({
     level: 'hard',
     showDecisionTree: false
@@ -29,12 +30,17 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
 
   // Reset game
   const resetGame = () => {
+    // First, clear any ongoing AI thinking state
+    setIsAIThinking(false);
+    setDecisionTree(null);
+    
+    // Then reset all game state
     setBoard(Array(9).fill(Player.NONE));
     setTurn(Player.X);
     setWinner(null);
     setIsDraw(false);
     setMoveHistory([]);
-    setDecisionTree(null);
+    setTotalMoves(0);
   };
 
   // Handle cell click
@@ -52,11 +58,16 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
     const newBoard = [...board];
     newBoard[index] = turn;
     
+    // Increment total moves
+    const nextMoveNumber = totalMoves + 1;
+    setTotalMoves(nextMoveNumber);
+    
     // Record move in history
     const newMoveHistory = [...moveHistory, {
       position: index,
       player: turn,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      moveNumber: nextMoveNumber
     }];
     
     // Update board state
@@ -83,6 +94,8 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
 
   // AI move logic
   useEffect(() => {
+    let isActive = true; // Flag to track if the effect is still active
+
     const makeAIMove = async () => {
       if (
         (gameMode === GameMode.PLAYER_VS_AI && turn === Player.O) || 
@@ -93,11 +106,16 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
         // Show decision tree if enabled
         if (aiSettings.showDecisionTree) {
           const tree = getDecisionTree(board, turn, getDifficultyDepth());
-          setDecisionTree(tree);
+          if (isActive) { // Only update if effect is still active
+            setDecisionTree(tree);
+          }
         }
 
         // Add a small delay to make the AI move visible
         await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Only proceed if the effect is still active
+        if (!isActive) return;
         
         const aiMoveIndex = getAIMove(board, turn, getDifficultyDepth());
         
@@ -105,13 +123,21 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
           makeMove(aiMoveIndex);
         }
         
-        setIsAIThinking(false);
+        if (isActive) { // Only update if effect is still active
+          setIsAIThinking(false);
+        }
       }
     };
 
     if (!winner) {
       makeAIMove();
     }
+
+    // Cleanup function
+    return () => {
+      isActive = false;
+      setIsAIThinking(false);
+    };
   }, [turn, gameMode, winner, board]);
 
   // Get difficulty depth based on AI level
@@ -140,7 +166,7 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
           <span>Back</span>
         </button>
         
-        <h2 className="text-2xl font-bold">Continuous Tic Tac Toe</h2>
+        <h2 className="text-xl font-bold">Infinite Tic Tac Toe</h2>
         
         <button 
           onClick={resetGame}
@@ -180,13 +206,13 @@ const ClassicGame: React.FC<ClassicGameProps> = ({ gameMode, onBack, isDarkMode 
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow">
             <h3 className="text-lg font-semibold mb-4">Move History</h3>
             
-            <div className="max-h-60 overflow-y-auto mb-4">
-              {moveHistory.map((move, index) => (
+            <div className="mb-4">
+              {moveHistory.map((move) => (
                 <div 
                   key={move.timestamp}
                   className="px-3 py-2 mb-1 rounded bg-slate-100 dark:bg-slate-700"
                 >
-                  {`Move #${index + 1}: Player ${move.player} at position ${move.position + 1}`}
+                  {move.moveNumber < 10 ? `#0${move.moveNumber}: ${move.player} @ ${move.position + 1}` : `#${move.moveNumber}: ${move.player} @ ${move.position + 1}`}
                 </div>
               ))}
             </div>

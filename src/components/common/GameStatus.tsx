@@ -14,7 +14,7 @@ const GameStatus: React.FC<GameStatusProps> = ({ turn, winner, isDraw, isAIThink
     if (winner) {
       return (
         <div className={`font-bold text-xl ${
-          winner === Player.X ? 'text-blue-500' : 'text-orange-500'
+          winner === Player.X ? 'text-blue-500' : 'text-rose-500'
         }`}>
           Player {winner} Wins!
         </div>
@@ -29,7 +29,7 @@ const GameStatus: React.FC<GameStatusProps> = ({ turn, winner, isDraw, isAIThink
       <div className="flex items-center gap-2">
         <span>Current Turn: </span>
         <span className={`font-bold ${
-          turn === Player.X ? 'text-blue-500' : 'text-orange-500'
+          turn === Player.X ? 'text-blue-500' : 'text-rose-500'
         }`}>
           Player {turn}
         </span>

@@ -118,7 +118,7 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
           <span>Back</span>
         </button>
         
-        <h2 className="text-2xl font-bold">Super Tic Tac Toe</h2>
+        <h2 className="text-xl font-bold">Super Tic Tac Toe</h2>
         
         <button 
           onClick={resetGame}

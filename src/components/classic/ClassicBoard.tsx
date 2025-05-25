@@ -46,7 +46,7 @@ const ClassicBoard: React.FC<ClassicBoardProps> = ({
           </span>
         )}
         {cellValue === Player.O && (
-          <span className={`${isWinningCell ? 'text-green-700 dark:text-green-300' : 'text-orange-500 dark:text-orange-400'}`}>
+          <span className={`${isWinningCell ? 'text-green-700 dark:text-green-300' : 'text-rose-500 dark:text-rose-400'}`}>
             O
           </span>
         )}
@@ -55,7 +55,7 @@ const ClassicBoard: React.FC<ClassicBoardProps> = ({
   };
 
   return (
-    <div className={`grid grid-cols-3 gap-2 ${smallBoard ? 'w-full max-w-[150px]' : 'w-full max-w-[350px]'} m-4`}>
+    <div className={`grid grid-cols-3 gap-1 ${smallBoard ? 'w-full' : 'w-full max-w-[350px] m-4'}`}>
       {Array(9).fill(null).map((_, index) => renderCell(index))}
     </div>
   );

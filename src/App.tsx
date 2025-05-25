@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Moon, Info, Store, Instagram, Linkedin, Github } from 'lucide-react';
+import { Sun, Moon, Info, Store, Instagram, Linkedin, Github, Grid, Bot } from 'lucide-react';
 import GameSelector from './components/GameSelector';
 import ClassicGame from './components/classic/ClassicGame';
 import SuperGame from './components/super/SuperGame';
@@ -31,9 +31,13 @@ function App() {
 
   return (
     <>
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gradient-to-br from-blue-900 to-slate-900 text-white' : 'bg-gradient-to-br from-blue-100 to-gray-100 text-slate-900'}`}>
+    <div className={`min-h-screen transition-colors duration-300 font-mono ${isDarkMode ? 'bg-gradient-to-br from-blue-900 to-slate-900 text-white' : 'bg-gradient-to-br from-blue-100 to-gray-100 text-slate-900'}`}>
       <header className="py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Tic Tac Bot</h1>
+          <h1 className="text-gradient-to-br from-blue-900 to-slate-900 text-2xl font-bold flex items-center gap-2">
+          <Grid size={24} className="text-blue-500" />
+          Tic-Tac-Bot
+          <Bot size={24} className="text-rose-500" />
+        </h1>
         <div className="flex gap-4">
           <button 
             onClick={toggleTutorial}
@@ -46,7 +50,7 @@ function App() {
             onClick={toggleDarkMode}
             className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
             aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            disabled={true}
+            disabled={false}
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>

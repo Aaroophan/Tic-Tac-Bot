@@ -50,15 +50,15 @@ const SuperBoard: React.FC<SuperBoardProps> = ({
 
     // Determine the border style based on if this board is where the next move must be played
     const borderStyle = isActive && activeBoard !== null
-      ? `border-4 ${turn === Player.X ? 'border-blue-500' : 'border-orange-500'}`
-      : 'border border-slate-300 dark:border-slate-600';
+      ? `border-4 ${turn === Player.X ? 'border-blue-500' : 'border-rose-500'}`
+      : 'border-4 border-slate-800 dark:border-slate-800';
 
     // Determine background color for completed boards
     const bgStyle = isBoardComplete(boardIndex) 
       ? boardWinner === Player.X 
-        ? 'bg-blue-100 dark:bg-blue-900/30' 
+        ? 'bg-blue-500/20 dark:bg-blue-500/30' 
         : boardWinner === Player.O 
-          ? 'bg-orange-100 dark:bg-orange-900/30'
+          ? 'bg-rose-500/20 dark:bg-rose-500/30'
           : 'bg-slate-100 dark:bg-slate-700' // Draw
       : 'bg-white dark:bg-slate-800';
 
@@ -71,7 +71,7 @@ const SuperBoard: React.FC<SuperBoardProps> = ({
     return (
       <div 
         key={boardIndex} 
-        className={`p-1 ${borderStyle} ${bgStyle} ${mainWinStyle} rounded-lg transition-all duration-200`}
+        className={`p-1 ${borderStyle} ${bgStyle} ${mainWinStyle} rounded-lg`}
       >
         <ClassicBoard 
           board={boards[boardIndex]}
@@ -87,8 +87,8 @@ const SuperBoard: React.FC<SuperBoardProps> = ({
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span className={`text-5xl font-bold ${
               boardWinner === Player.X 
-                ? 'text-blue-500/80 dark:text-blue-400/80' 
-                : 'text-orange-500/80 dark:text-orange-400/80'
+                ? 'text-blue-500 dark:text-blue-400' 
+                : 'text-rose-500 dark:text-rose-400'
             }`}>
               {boardWinner}
             </span>
@@ -99,9 +99,9 @@ const SuperBoard: React.FC<SuperBoardProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 w-full max-w-[600px]">
+    <div className="grid grid-cols-3 gap-5 w-full max-w-[800px]">
       {Array(9).fill(null).map((_, index) => (
-        <div key={index} className="relative">
+        <div key={index} className="relative aspect-square">
           {renderSubBoard(index)}
         </div>
       ))}
