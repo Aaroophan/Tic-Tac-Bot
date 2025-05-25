@@ -3,7 +3,8 @@ import { ArrowLeft, RotateCcw } from 'lucide-react';
 import SuperBoard from './SuperBoard';
 import AIControls from '../common/AIControls';
 import GameStatus from '../common/GameStatus';
-import { GameMode, Player, AISettings } from '../../types/game';
+import DecisionTreeView from '../ai/DecisionTreeView';
+import { GameMode, Player, AISettings, MoveHistoryItem } from '../../types/game';
 import { initSuperBoard, checkSuperWinner, checkSuperDraw, makeValidMove } from '../../game/superGame';
 import { getSuperAIMove } from '../../game/ai/minimaxSuper';
 
@@ -18,6 +19,8 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
   const [turn, setTurn] = useState<Player.X | Player.O>(Player.X);
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
+  const [moveHistory, setMoveHistory] = useState<MoveHistoryItem[]>([]);
+  const [totalMoves, setTotalMoves] = useState(0);
   const [aiSettings, setAISettings] = useState<AISettings>({
     level: 'hard',
     showDecisionTree: false
@@ -30,6 +33,8 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
     setTurn(Player.X);
     setWinner(null);
     setIsDraw(false);
+    setMoveHistory([]);
+    setTotalMoves(0);
   };
 
   // Handle cell click
@@ -47,6 +52,20 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
   // Make a move
   const makeMove = (boardIndex: number, cellIndex: number) => {
     const newState = makeValidMove(superState, boardIndex, cellIndex, turn);
+    
+    // Increment total moves
+    const nextMoveNumber = totalMoves + 1;
+    setTotalMoves(nextMoveNumber);
+    
+    // Record move in history
+    const newMove = {
+      position: boardIndex * 9 + cellIndex, // Convert to single index for consistency
+      player: turn,
+      timestamp: Date.now(),
+      moveNumber: nextMoveNumber
+    };
+    
+    setMoveHistory(prev => [...prev, newMove]);
     
     // Update board state
     setSuperState(newState);
@@ -127,30 +146,54 @@ const SuperGame: React.FC<SuperGameProps> = ({ gameMode, onBack, isDarkMode }) =
         </button>
       </div>
 
-      <div className="flex flex-col items-center">
-        <GameStatus 
-          turn={turn} 
-          winner={winner} 
-          isDraw={isDraw} 
-          isAIThinking={isAIThinking} 
-        />
-        
-        <div className="my-6">
-          <SuperBoard 
-            superState={superState}
-            onCellClick={handleCellClick}
-            turn={turn}
-            isDarkMode={isDarkMode}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 flex flex-col items-center">
+          <GameStatus 
+            turn={turn} 
+            winner={winner} 
+            isDraw={isDraw} 
+            isAIThinking={isAIThinking} 
           />
+          
+          <div className="my-6">
+            <SuperBoard 
+              superState={superState}
+              onCellClick={handleCellClick}
+              turn={turn}
+              isDarkMode={isDarkMode}
+            />
+          </div>
+          
+          {(gameMode === GameMode.PLAYER_VS_AI || gameMode === GameMode.AI_VS_AI) && (
+            <AIControls 
+              settings={aiSettings} 
+              onChange={handleAISettingsChange} 
+              gameType="super"
+            />
+          )}
         </div>
-        
-        {(gameMode === GameMode.PLAYER_VS_AI || gameMode === GameMode.AI_VS_AI) && (
-          <AIControls 
-            settings={aiSettings} 
-            onChange={handleAISettingsChange} 
-            gameType="super"
-          />
-        )}
+
+        <div className="lg:col-span-1">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow">
+            <h3 className="text-lg font-semibold mb-4">Move History</h3>
+            
+            <div className="mb-4 h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+              {moveHistory.map((move) => {
+                const boardIndex = Math.floor(move.position / 9);
+                const cellIndex = move.position % 9;
+                return (
+                  <div 
+                    key={move.timestamp}
+                    className="px-3 py-2 mb-1 rounded bg-slate-700 dark:bg-slate-700 text-sm"
+                  >
+                    {move.moveNumber < 10 ? `#0${move.moveNumber}: ${move.player} @ Board ${boardIndex + 1}, Cell ${cellIndex + 1}` : 
+                     `#${move.moveNumber}: ${move.player} @ Board ${boardIndex + 1}, Cell ${cellIndex + 1}`}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
